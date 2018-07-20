@@ -2,7 +2,13 @@ import java.math.BigDecimal;
 
 public class Money {
 
-    public Money(BigDecimal amount) {
+    private BigDecimal amount;
 
+    public Money(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public double toDouble() {
+        return this.amount.doubleValue();
     }
 }
