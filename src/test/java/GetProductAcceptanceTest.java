@@ -20,6 +20,6 @@ public class GetProductAcceptanceTest {
 
         String products = productController.get();
 
-        assertThat(products, is("{ products: [{ title: \" Game of Thrones \", \" price: 9 \"}]"));
+        assertThat(products, is("{ products: [{ title: \"Game of Thrones\", price: 9.00 }] }"));
     }
 }
