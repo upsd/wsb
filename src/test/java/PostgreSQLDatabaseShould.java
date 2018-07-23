@@ -27,7 +27,13 @@ public class PostgreSQLDatabaseShould {
 
     @Test
     public void get_all_products() {
-        PostgreSQLDatabase postgreSQLDatabase = new PostgreSQLDatabase(postgreSQLContainer);
+        PostgreSQLDatabase postgreSQLDatabase = new PostgreSQLDatabase(
+                postgreSQLContainer.getContainerIpAddress(),
+                postgreSQLContainer.getFirstMappedPort(),
+                postgreSQLContainer.getDatabaseName(),
+                postgreSQLContainer.getUsername(),
+                postgreSQLContainer.getPassword()
+        );
 
         postgreSQLDatabase.add(new Product("Breaking Bad", new Money(new BigDecimal(9))));
 

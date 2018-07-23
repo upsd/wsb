@@ -1,5 +1,3 @@
-import org.testcontainers.containers.PostgreSQLContainer;
-
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -7,15 +5,14 @@ import java.util.List;
 
 public class PostgreSQLDatabase implements Database {
 
-    private final PostgreSQLContainer container;
     private Connection connection;
 
-    public PostgreSQLDatabase(PostgreSQLContainer postgreSQLContainer) {
-        this.container = postgreSQLContainer;
-        this.connection = establishConnection(this.connection);
+    public PostgreSQLDatabase(String host, int port, String dbName, String username, String password) {
+        String url = getJdbcUrl(host, port, dbName);
 
-        establishConnection(this.connection);
-        createTable(this.connection);
+        establishConnection(url, username, password);
+
+        createTable();
     }
 
     @Override
@@ -26,6 +23,10 @@ public class PostgreSQLDatabase implements Database {
     @Override
     public void add(Product product) {
         addProduct(product);
+    }
+
+    private String getJdbcUrl(String host, int port, String dbName) {
+        return String.format("jdbc:postgresql://%s:%d/%s", host, port, dbName);
     }
 
     private void addProduct(Product product) {
@@ -60,16 +61,15 @@ public class PostgreSQLDatabase implements Database {
         return products;
     }
 
-    private Connection establishConnection(Connection connection) {
+    private void establishConnection(String jdbcUrl, String username, String password) {
         try {
-            connection = DriverManager.getConnection(container.getJdbcUrl(), container.getUsername(), container.getPassword());
+            this.connection = DriverManager.getConnection(jdbcUrl, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return connection;
     }
 
-    private void createTable(Connection connection) {
+    private void createTable() {
         try {
             connection.prepareStatement("CREATE TABLE products (\n" +
                     "    title        varchar(30),\n" +
