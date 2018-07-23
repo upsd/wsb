@@ -17,6 +17,6 @@ public class JsonFormatterShould {
 
         String json = formatter.format(products);
 
-        assertThat(json, is("{ products: [{ title: \"A product\", price: 23.00 }] }"));
+        assertThat(json, is("{ \"products\": [{ \"title\": \"A product\", \"price\": 23.00 }] }"));
     }
 }
